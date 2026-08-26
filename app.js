@@ -1,31 +1,43 @@
-// Obtiene el elemento HTML donde se mostrará la hora
 const elementoHora = document.getElementById("hora");
+const elementoFecha = document.getElementById("fecha");
 
-// Función encargada de actualizar la hora
+/**
+ * Actualiza la hora y fecha del sistema.
+ */
 function actualizarHora() {
 
-    // Obtiene la fecha y hora actual del sistema
     const ahora = new Date();
 
-    // Obtiene horas, minutos y segundos
+    // Formato de hora HH:MM:SS
     const horas = String(ahora.getHours()).padStart(2, "0");
     const minutos = String(ahora.getMinutes()).padStart(2, "0");
     const segundos = String(ahora.getSeconds()).padStart(2, "0");
 
-    // Construye la hora en formato HH:MM:SS
-    const horaActual = `${horas}:${minutos}:${segundos}`;
+    elementoHora.textContent =
+        `${horas}:${minutos}:${segundos}`;
 
-    // Muestra la hora en la interfaz
-    elementoHora.textContent = horaActual;
+    // Formato de fecha en español
+    const opcionesFecha = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    };
+
+    elementoFecha.textContent =
+        ahora.toLocaleDateString("es-MX", opcionesFecha);
 }
 
-// Ejecuta la función inmediatamente
+// Ejecutar inmediatamente
 actualizarHora();
 
-// Actualiza la hora automáticamente cada segundo
+// Actualizar cada segundo
 setInterval(actualizarHora, 1000);
 
-// Registra el Service Worker
+
+/**
+ * Registro del Service Worker.
+ */
 if ("serviceWorker" in navigator) {
 
     window.addEventListener("load", () => {
@@ -33,10 +45,19 @@ if ("serviceWorker" in navigator) {
         navigator.serviceWorker
             .register("service-worker.js")
             .then(() => {
-                console.log("Service Worker registrado correctamente.");
+
+                console.log(
+                    "Service Worker registrado correctamente."
+                );
+
             })
             .catch((error) => {
-                console.error("Error al registrar el Service Worker:", error);
+
+                console.error(
+                    "Error al registrar el Service Worker:",
+                    error
+                );
+
             });
 
     });
